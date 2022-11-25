@@ -1,0 +1,5 @@
+set up postgres on docker
+
+in enviorment:
+docker pull postgres
+docker run -it --rm -d -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres
