@@ -39,3 +39,15 @@ class PostgresApi():
         finally:
             self.postgreSQL_pool.putconn(ps_connection)
 
+    def authentication(self, user_name, password):
+        ps_connection = self.postgreSQL_pool.getconn()
+        
+        try:
+            with ps_connection.cursor(cursor_factory=psycopg2.extras.DictCursor) as ps_cursor:
+                ps_cursor.execute(f"SELECT * FROM public.auth where \"userName\"= '{user_name}' and \"password\" = '{password}'")
+                return len(ps_cursor.fetchall()) == 1
+                
+        except (Exception, psycopg2.DatabaseError) as error:
+            logging.error("Error while connecting to PostgreSQL", error)    
+        finally:
+            self.postgreSQL_pool.putconn(ps_connection)

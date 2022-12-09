@@ -3,11 +3,11 @@ import logging
 import os
 from posgres.postgres import PostgresApi
 import yaml
-
-import zipfile  
+import zipfile
+from flask_cors import CORS  
 
 app = Flask(__name__)
-
+CORS(app)
 
 
 yaml_file = open("config.yaml", encoding="utf-8")
@@ -22,6 +22,11 @@ path = os.path.dirname(__file__)
 @app.route('/')
 def default():
     return ""
+
+
+@app.route('/auth/<user_name>/<password>', methods=["GET"])
+def auth(user_name, password):    
+    return {"isAuth": postgres_obj.authentication(user_name, password)}
 
 @app.route('/post', methods=["POST"])
 def insert_new():
@@ -58,4 +63,4 @@ if __name__ == '__main__':
     logging.basicConfig()
     logging.getLogger().setLevel(logging.INFO)
     
-    app.run(debug=True,host='0.0.0.0', port=3)
+    app.run(host='0.0.0.0', port=3333)

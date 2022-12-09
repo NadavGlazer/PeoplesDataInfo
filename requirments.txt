@@ -1,0 +1,6 @@
+flask 
+logging
+yaml
+zipfile
+flask_cors 
+psycopg2
